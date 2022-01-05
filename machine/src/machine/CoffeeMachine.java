@@ -48,18 +48,73 @@ public class CoffeeMachine {
 	                    return MAIN_MENU;
 	                case "exit":
 	                    return EXIT_MACHINE;            
-	    	        }
+    	        }
 				return START_MACHINE; 
-    		}	
-    		
-    		
+    		}   		
     	},
     	CHOOSE_COFFEE {
     		@Override    		
     	    public CoffeeMachineState nextState() {
-    			return MAIN_MENU;
-    		}
-    		
+    			System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
+    	        Scanner scanner = new Scanner(System.in);
+    	        String input = scanner.next();
+    	        switch (input) {
+                case "1":
+                    if (water < ESPRESSO_WATER) {
+                        System.out.println("Sorry, not enough water!");
+                    } else if (beans < ESPRESSO_BEANS) {
+                        System.out.println("Sorry, not enough coffee!");
+                    } else if (cups < 1) {
+                        System.out.println("Sorry, not enough cups!");
+                    } else {                 
+                        System.out.println("I have enough resources, making you a coffee!");
+                        water = water - ESPRESSO_WATER;
+                        beans = beans - ESPRESSO_BEANS;
+                        cups = cups - 1;
+                        money = money + ESPRESSO_PRICE;
+                    }                
+                    return MAIN_MENU;
+                case "2":
+                    if (water < LATTE_WATER) {
+                        System.out.println("Sorry, not enough water!");
+                    } else if (milk < LATTE_MILK) {
+                        System.out.println("Sorry, not enough milk!");
+                    } else if (beans < LATTE_BEANS) {
+                        System.out.println("Sorry, not enough coffee!");
+                    } else if (cups < 1) {
+                        System.out.println("Sorry, not enough cups!");
+                    } else {                 
+                        System.out.println("I have enough resources, making you a coffee!");
+                        water = water - LATTE_WATER;
+                        milk = milk - LATTE_MILK;
+                        beans = beans - LATTE_BEANS;
+                        cups = cups - 1;
+                        money = money + LATTE_PRICE;
+                    }                                
+                    return MAIN_MENU;
+                case "3":
+                    if (water < CAPPUCCINO_WATER) {
+                        System.out.println("Sorry, not enough water!");
+                    } else if (milk < CAPPUCCINO_MILK) {
+                        System.out.println("Sorry, not enough milk!");
+                    } else if (beans < CAPPUCCINO_BEANS) {
+                        System.out.println("Sorry, not enough coffee!");
+                    } else if (cups < 1) {
+                        System.out.println("Sorry, not enough cups!");
+                    } else {                 
+                        System.out.println("I have enough resources, making you a coffee!");
+                        water = water - CAPPUCCINO_WATER;
+                        milk = milk - CAPPUCCINO_MILK;
+                        beans = beans - CAPPUCCINO_BEANS;
+                        cups = cups - 1;
+                        money = money + CAPPUCCINO_PRICE;
+                    }               
+                    return MAIN_MENU;
+                case "back":                
+                	return MAIN_MENU;
+    	        } 
+    	        return START_MACHINE;    
+    		}     			
     	},
     	FILL_MACHINE {
     		@Override    		
