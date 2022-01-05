@@ -21,7 +21,67 @@ public class CoffeeMachine {
     private static int cups = 9;
     private static int money = 550;
     
-    void printState() {
+    public enum CoffeeMachineState {
+    	
+    	START_MACHINE {
+    		@Override    		
+    	    public CoffeeMachineState nextState() {
+    			return MAIN_MENU;
+    		}
+    	},
+    	MAIN_MENU {
+    		@Override    		
+    	    public CoffeeMachineState nextState() {
+    			System.out.println("Write action (buy, fill, take, remaining, exit):");
+    	        Scanner scanner = new Scanner(System.in);
+    	        String input = scanner.next();
+    	        switch (input) {
+	                case "buy":
+	                    return CHOOSE_COFFEE;
+	                case "fill":
+	                    return FILL_MACHINE;
+	                case "take":
+	                    take();
+	                    return MAIN_MENU;
+	                case "remaining":
+	                    printState();
+	                    return MAIN_MENU;
+	                case "exit":
+	                    return EXIT_MACHINE;            
+	    	        }
+				return START_MACHINE; 
+    		}	
+    		
+    		
+    	},
+    	CHOOSE_COFFEE {
+    		@Override    		
+    	    public CoffeeMachineState nextState() {
+    			return MAIN_MENU;
+    		}
+    		
+    	},
+    	FILL_MACHINE {
+    		@Override    		
+    	    public CoffeeMachineState nextState() {
+    			return MAIN_MENU;
+    		}
+    		
+    	},
+    	EXIT_MACHINE {
+    		@Override    		
+    	    public CoffeeMachineState nextState() {
+    			exit = true;
+    			return this;
+    		}
+    		
+    	};
+    	
+    	public abstract CoffeeMachineState nextState();
+    	
+    }
+    
+    static void printState() {
         System.out.println("\nThe coffee machine has:");
         System.out.println(water + " ml of water");
         System.out.println(milk + " ml of milk");
@@ -107,40 +167,40 @@ public class CoffeeMachine {
         cups = cups + input;
     }
     
-    void take() {
+    static void take() {
         System.out.println("I gave you $"+ money);
         money = 0;
     }
     
-    void promptUser() {
-        System.out.println("Write action (buy, fill, take, remaining, exit):");
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
-        CoffeeMachine cm = new CoffeeMachine();
-        switch (input) {
-            case "buy":
-                cm.buy();
-                break;
-            case "fill":
-                cm.fill();
-                break;
-            case "take":
-                cm.take();
-                break;
-            case "remaining":
-                cm.printState();
-                break;
-            case "exit":
-                exit = true;
-                break;            
-        }
-        
-    }
+//    void promptUser() {
+//        System.out.println("Write action (buy, fill, take, remaining, exit):");
+//        Scanner scanner = new Scanner(System.in);
+//        String input = scanner.next();
+//        CoffeeMachine cm = new CoffeeMachine();
+//        switch (input) {
+//            case "buy":
+//                cm.buy();
+//                break;
+//            case "fill":
+//                cm.fill();
+//                break;
+//            case "take":
+//                cm.take();
+//                break;
+//            case "remaining":
+//                cm.printState();
+//                break;
+//            case "exit":
+//                exit = true;
+//                break;            
+//        }
+//        
+//    }
     
     public static void main(String[] args) {        
-        CoffeeMachine cm = new CoffeeMachine();
+    	CoffeeMachineState state = CoffeeMachineState.START_MACHINE;
         while (!exit) {
-            cm.promptUser();
+            state = state.nextState();
         }       
                 
     }
